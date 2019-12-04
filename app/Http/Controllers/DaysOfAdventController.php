@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Day1;
 use App\Day2;
+use App\Day3;
+use App\Day4;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -93,6 +95,67 @@ class DaysOfAdventController extends Controller {
 
         }
         return view('days.2', $data);
+
+    }
+
+    public function day3($request)
+    {
+        $defaultInput = Storage::get('public/day3.txt');
+        $data = [
+            'part1' => $defaultInput,
+            'customInput' => ''
+        ];
+
+        if ($request->isMethod('post')) {
+            if ($request->has('customInput') && !empty($request->get('customInput'))) {
+                $defaultInput = $request->get('customInput');
+                $data['customInput'] = $request->get('customInput');
+            }
+
+            $day = new Day3(['inputs' => $defaultInput]);
+            try {
+                $data['result1'] = $day->calculatePart1();
+            } catch (Exception $e) {
+                $data['result1'] = $e->getMessage() . "\n\n" . $e->getFile() . ':' . $e->getLine();
+            }
+            try {
+                $data['result2'] = $day->calculatePart2();
+            } catch (Exception $e) {
+                $data['result2'] = $e->getMessage() . "\n\n" . $e->getFile() . ':' . $e->getLine();
+            }
+
+        }
+
+        return view('days.3', $data);
+    }
+
+    public function day4($request) {
+        $defaultInput = Storage::get('public/day4.txt');
+        $data = [
+            'part1' => $defaultInput,
+            'customInput' => ''
+        ];
+
+        if ($request->isMethod('post')) {
+            if ($request->has('customInput') && !empty($request->get('customInput'))) {
+                $defaultInput = $request->get('customInput');
+                $data['customInput'] = $request->get('customInput');
+            }
+
+            $day = new Day4(['inputs' => $defaultInput]);
+            try {
+                $data['result1'] = $day->calculatePart1();
+            } catch (Exception $e) {
+                $data['result1'] = $e->getMessage() . "\n\n" . $e->getFile() . ':' . $e->getLine();
+            }
+            try {
+                $data['result2'] = $day->calculatePart2();
+            } catch (Exception $e) {
+                $data['result2'] = $e->getMessage() . "\n\n" . $e->getFile() . ':' . $e->getLine();
+            }
+
+        }
+        return view('days.4', $data);
 
     }
 }
